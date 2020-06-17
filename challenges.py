@@ -18,6 +18,7 @@ def timeToRot(grid):
         return minutes
     # execute BFS
     while len(queue) > 0:
+        print(f'Queue to start: {queue}, minutes = {minutes}')
         # visit all the oranges to rot during this minute
         rotten_this_min = list()
         for (x, y) in queue.copy():
@@ -33,51 +34,30 @@ def timeToRot(grid):
                 (x + 1, y)  # down
             ]
             for (x_p, y_p) in potentials:
-                # make sure elements are true neighbors, not negative indexing
+                # make sure elements are true neighbors
                 try:
-                    if 0 <= x_p <= len(grid) and 0 <= y_p <= len(grid[x_p]): 
+                    # no negative indexing allowed
+                    if 0 <= x_p < len(grid) and 0 <= y_p < len(grid[0]): 
                         if grid[x_p][y_p] == 1 and (x_p, y_p) not in visited:
                             queue.append((x_p, y_p))
                 except IndexError:
                     pass
-        # remove all the oranges that rot this min
-        for orange in rotten_this_min:
-            queue.remove(orange)
-            visited.add(orange)
-        # on first iterationm remove the initially rotten
-        else:
-            visited.add(queue.pop(0))
-        # increment min
+            # visit the orange
+            queue.remove((x, y))
+            visited.add((x, y))
+        # increment minutes
         minutes += 1
     # if 1's still remain, then return -1
     for x, row in enumerate(grid):
         for y, val, in enumerate(row):
             if grid[x][y] == 1:
+                print('ones remain!')
                 return -1
     # else return minutes
     return minutes
 
 
 if __name__ == "__main__":
-    oranges1 = [
-    [2,1,1],
-    [1,1,0],
-    [0,1,1]
-]
-# minutes = timeToRot(oranges1)
-# print(minutes)
-# assert minutes == 4, f'Minutes: {minutes}'
-# additional tests
-oranges2 = [
-    [2,1,1],
-    [0,1,1],
-    [1,0,1]
-]
-# assert timeToRot(oranges2) == -1
-
-oranges3 = [
-    [0,2]
-]
-assert timeToRot(oranges3) == 0
+    pass
      
         
