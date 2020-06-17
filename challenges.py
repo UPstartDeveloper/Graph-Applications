@@ -4,6 +4,63 @@ def timeToRot(grid):
     orange. Each minute, a rotten orange contaminates its 4-directional neighbors. Return the number
     of minutes until all oranges rot.
     """
+    # init variables
+    minutes = -1
+    visited = set()
+    queue = list()
+    # enqueue the first rotten orange
+    # init_rotten = list()
+    for x, row in enumerate(grid):
+        for y, val, in enumerate(row):
+            if grid[x][y] == 2:
+                queue.append((x, y))
+    # if none found, then return -1
+    if len(queue) == 0:
+        return minutes
+    # execute BFS
+    # queue.append(init_rotten.pop)
+    # print(f'Qeue before BFS: {queue}')
+    while len(queue) > 0:
+        # visit all the oranges to rot during this minute
+        rotten_this_min = list()
+        for (x, y) in queue.copy():
+            # make the orange rotten rotten
+            if grid[x][y] == 1:
+                grid[x][y] = 2
+                rotten_this_min.append((x, y))
+            # add the neighbors of this orange
+            potentials = [
+                (x, y - 1),  # up
+                (x, y + 1),  # down
+                (x - 1, y),  # left
+                (x + 1, y)  # right
+            ]
+            for (x_p, y_p) in potentials:
+                try:
+                    if grid[x_p][y_p] == 1 and (x_p, y_p) not in visited:
+                        queue.append((x_p, y_p))
+                        # visited.add((x_p, y_p))
+                except IndexError:
+                    continue
+        # remove all the oranges that rot this min
+        for orange in rotten_this_min:
+            queue.remove(orange)
+            visited.add(orange)
+        # on first iterationm remove the initially rotten
+        else:
+            visited.add(queue.pop(0))
+        # increment min
+        minutes += 1
+    # if 1's still remain, then return -1
+    for x, row in enumerate(grid):
+        for y, val, in enumerate(row):
+            if grid[x][y] == 1:
+                print("1's remaining!")
+                return -1
+    # else return minutes
+    return minutes
+                        
+    """
     # init a set of rotten oranges
     visited = set()  # stores xy coordinates
     # init queue
@@ -47,4 +104,28 @@ def timeToRot(grid):
         minutes += 1
     # Step 3: return minutes
     return minutes
+    """
+
+if __name__ == "__main__":
+    oranges1 = [
+    [2,1,1],
+    [1,1,0],
+    [0,1,1]
+]
+minutes = timeToRot(oranges1)
+# print(minutes)
+assert minutes == 4, f'Minutes: {minutes}'
+# additional tests
+oranges2 = [
+    [2,1,1],
+    [0,1,1],
+    [1,0,1]
+]
+assert timeToRot(oranges2) == -1
+
+oranges3 = [
+    [0,2]
+]
+assert timeToRot(oranges3) == 0
+     
         
