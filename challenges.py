@@ -71,7 +71,6 @@ def dfs_for_cc(grid, point, visited, island):
     """
     # visit this vertex
     visited.add(point)
-    island.append(point)
     # iterate over neighbors
     x, y = point
     neighbors = (
@@ -81,17 +80,23 @@ def dfs_for_cc(grid, point, visited, island):
         (x + 1, y)  # down
     )
     for neighbor_coordinates in neighbors:
+        # get the coordinates of the neighbor
         neighbor_x, neighbor_y = neighbor_coordinates
-        value = grid[neighbor_x][neighbor_y]
-        if value == 1 and neighbor_coordinates not in visited:
-            dfs_for_cc(grid, neighbor_coordinates, visited, island)
+        # prevent negative indexing
+        if 0 <= neighbor_x < len(grid) and 0 <= neighbor_y < len(grid[0]):
+            value = grid[neighbor_x][neighbor_y]
+            if value == 1 and neighbor_coordinates not in visited:
+                dfs_for_cc(grid, neighbor_coordinates, visited, island)
+                island.append(point)
     return island
 
 def numIslands(grid):
-    """Take in a grid of 1s (land) and 0s (water) and return the number of islands."""
+    """Take in a grid of 1s (land) and 0s (water) and return the number of islands.
+       Idea 1: each island is a set of connected components in the overall grid
+    
+    """
     # init a list of distinct land masses
     islands = list()
-    # Idea 1: each island is a set of connected components in the overall grid
     # set for all previously seen points
     visited = set()
     # execute DFS - find all connected components
@@ -101,9 +106,13 @@ def numIslands(grid):
             if point == 1 and point not in visited:
                 island = list()
                 dfs_for_cc(grid, (x, y), visited, island)
-                islands.append(island)
+                # if repeat points visited, list is empty
+                if len(island) > 0:
+                    islands.append(island)
     # return the number of islands
-    return islands
+    print(f'islands: {islands}')
+    print(f'visited: {visited}')
+    return len(islands)
 
 
 if __name__ == "__main__":
