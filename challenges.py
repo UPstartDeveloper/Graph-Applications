@@ -10,8 +10,8 @@ def timeToRot(grid):
     queue = list()
     # enqueue the first rotten orange
     for x, row in enumerate(grid):
-        for y, val, in enumerate(row):
-            if grid[x][y] == 2:
+        for y, value, in enumerate(row):
+            if value == 2:
                 queue.append((x, y))
     # if none found, then return -1
     if len(queue) == 0:
