@@ -114,8 +114,46 @@ def numIslands(grid):
     return len(islands)
 
 def courseOrder(numCourses, prerequisites):
-    """Return a course schedule according to the prerequisites provided."""
-    pass
+    """Return a course schedule according to the prerequisites provided.
+       Utilizes topological sort, using Kahn's Algorithm.
+
+    """
+    # A: calculate the in-degree of each course (a vertex)
+    course_in_degrees = dict()
+    for course_pair in prerequisites:
+        course, prereq = course_pair
+        # map the in-degrees of the course
+        course_in_degree = 1
+        if course in course_in_degrees:
+            course_in_degree += course_in_degrees[course]
+        course_in_degrees[course] = course_in_degree
+        # map the in degree of the prereq
+        if prereq not in course_in_degrees:
+            course_in_degrees[prereq] = 0
+    print(course_in_degrees)
+    # B: find a valid course order
+    # store a set of the vertices
+    courses = set(course_in_degrees.keys())
+    course_order = list()
+    while len(courses) > 0:
+        # C: find  a course with in-degree of 0
+        next_course = None
+        for course in course_in_degrees:
+            if course_in_degrees[course] == 0:
+                next_course = course
+        # add to solution
+        course_order.append(next_course)
+        # remove from the set
+        courses.remove(next_course)
+        # D: decrement the in-degree of the following course
+        # iterate over course pairings
+        for course_pair in prerequisites:
+            # find each pair where next_course found
+            course, prereq = course_pair
+            if next_course == prereq:
+                # go in the dict and decrement the value
+                course_in_degrees[course] -= 1
+    return course_order
 
 
 def wordLadderLength(beginWord, endWord, wordList):
