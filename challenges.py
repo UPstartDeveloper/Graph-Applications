@@ -113,6 +113,13 @@ def numIslands(grid):
     # return the number of islands
     return len(islands)
 
+def wordLadderLength(beginWord, endWord, wordList):
+    """Return the length of the shortest word chain
+       from beginWord to endWord, using words from wordList.
+    
+    """
+    pass
+
 
 if __name__ == "__main__":
     pass
