@@ -118,9 +118,42 @@ def wordLadderLength(beginWord, endWord, wordList):
        from beginWord to endWord, using words from wordList.
     
     """
-    pass
+    # make sure the transformation is possible
+    assert len(beginWord) == len(endWord) and endWord in wordList
+    # store a dict of all words and their neighbors
+    wordList.append(beginWord)
+    word_neighbors = dict()
+    for index, word, in enumerate(wordList):
+        neighbors = list()
+        # check the differences in spelling between words
+        for other_index, other_word in enumerate(wordList):
+            diff = set(word) - set(other_word)  # letters in word, not in other
+            if len(diff) == 1:
+                neighbors.append(other_word)
+        # add pair to dict
+        word_neighbors[word] = neighbors
+    # use BFS to get from beginWord to the end
+    queue = [beginWord]
+    # visited = set()
+    # store each word, with path taken from beginWord to reach it
+    word_path = {
+        beginWord: [beginWord]
+    }
+    while len(queue) > 0:
+        current_word = queue.pop()
 
-
-if __name__ == "__main__":
-    pass
-
+        # found the end
+        if current_word == endWord:
+            break
+        
+        # enqueue the neighbors
+        neighbors = word_neighbors[current_word]
+        for neighbor in neighbors:
+            if neighbor not in word_path:
+                current_path = word_path[current_word]
+                # extend the path by 1 word
+                next_path = current_path + [neighbor]
+                word_path[neighbor] = next_path
+                queue.append(neighbor)
+    # return the length
+    return len(word_path[endWord])
