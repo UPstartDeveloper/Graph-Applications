@@ -87,8 +87,9 @@ def dfs_for_cc(grid, point, visited, island):
             value = grid[neighbor_x][neighbor_y]
             if value == 1 and neighbor_coordinates not in visited:
                 dfs_for_cc(grid, neighbor_coordinates, visited, island)
-                island.append(point)
-    return island
+            # now all neighbors visited - this point can be included as well
+            island.append(point)
+    return None
 
 def numIslands(grid):
     """Take in a grid of 1s (land) and 0s (water) and return the number of islands.
@@ -101,17 +102,15 @@ def numIslands(grid):
     visited = set()
     # execute DFS - find all connected components
     for x, row in enumerate(grid):
-        for y, value in enumerate(row):
-            point = grid[x][y]
-            if point == 1 and point not in visited:
+        for y, grid_val in enumerate(row):
+            if grid_val == 1 and (x, y) not in visited:
                 island = list()
+                # perform DFS, update the points visited
                 dfs_for_cc(grid, (x, y), visited, island)
                 # if repeat points visited, list is empty
                 if len(island) > 0:
                     islands.append(island)
     # return the number of islands
-    print(f'islands: {islands}')
-    print(f'visited: {visited}')
     return len(islands)
 
 
