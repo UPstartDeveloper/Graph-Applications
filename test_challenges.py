@@ -48,6 +48,20 @@ class NumIslandsTests(unittest.TestCase):
         ]
         assert challenges.numIslands(map2) == 3
 
+
+class ClassSchedulingTests(unittest.TestCase):
+    def test_courseOrder(self):
+        """Returns the order in which courses must be taken,
+           in order to meet prerequisites.
+        
+        """
+        courses1 = [ [1,0] ]
+        assert challenges.courseOrder(2, courses1) == [0, 1]
+
+        courses2 = [ [1,0], [2,0], [3,1], [3,2] ]
+        possibleSchedules = [ [0, 1, 2, 3], [0, 2, 1, 3] ]
+        assert challenges.courseOrder(4, courses2) in possibleSchedules
+
 class WordLadderTests(unittest.TestCase):
     def test_wordLadderLength(self):
         """Returns the minimum amount of 1-letter transformations to change

@@ -113,6 +113,11 @@ def numIslands(grid):
     # return the number of islands
     return len(islands)
 
+def courseOrder(numCourses, prerequisites):
+    """Return a course schedule according to the prerequisites provided."""
+    pass
+
+
 def wordLadderLength(beginWord, endWord, wordList):
     """Return the length of the shortest word chain
        from beginWord to endWord, using words from wordList.
