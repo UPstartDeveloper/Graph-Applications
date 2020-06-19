@@ -130,12 +130,9 @@ def courseOrder(numCourses, prerequisites):
         # map the in degree of the prereq
         if prereq not in course_in_degrees:
             course_in_degrees[prereq] = 0
-    print(course_in_degrees)
     # B: find a valid course order
-    # store a set of the vertices
-    courses = set(course_in_degrees.keys())
     course_order = list()
-    while len(courses) > 0:
+    while len(course_in_degrees) > 0:
         # C: find  a course with in-degree of 0
         next_course = None
         for course in course_in_degrees:
@@ -143,8 +140,8 @@ def courseOrder(numCourses, prerequisites):
                 next_course = course
         # add to solution
         course_order.append(next_course)
-        # remove from the set
-        courses.remove(next_course)
+        # remove from the set of courses to take
+        del course_in_degrees[next_course]
         # D: decrement the in-degree of the following course
         # iterate over course pairings
         for course_pair in prerequisites:
