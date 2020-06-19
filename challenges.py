@@ -1,4 +1,4 @@
-def timeToRot(grid):
+def time_to_rot(grid):
     """
     Take in a grid of numbers, where 0 is an empty space, 1 is a fresh orange, and 2 is a rotten
     orange. Each minute, a rotten orange contaminates its 4-directional neighbors. Return the number
@@ -91,7 +91,7 @@ def dfs_for_cc(grid, point, visited, island):
             island.append(point)
     return None
 
-def numIslands(grid):
+def num_islands(grid):
     """Take in a grid of 1s (land) and 0s (water) and return the number of islands.
        Idea 1: each island is a set of connected components in the overall grid
     
@@ -113,7 +113,7 @@ def numIslands(grid):
     # return the number of islands
     return len(islands)
 
-def courseOrder(numCourses, prerequisites):
+def course_order(num_courses, prerequisites):
     """Return a course schedule according to the prerequisites provided.
        Utilizes topological sort, using Kahn's Algorithm.
 
@@ -153,37 +153,37 @@ def courseOrder(numCourses, prerequisites):
     return course_order
 
 
-def wordLadderLength(beginWord, endWord, wordList):
+def word_ladder_length(begin_word, end_word, word_list):
     """Return the length of the shortest word chain
        from beginWord to endWord, using words from wordList.
     
     """
     # make sure the transformation is possible
-    assert len(beginWord) == len(endWord) and endWord in wordList
+    assert len(begin_word) == len(end_word) and end_word in word_list
     # store a dict of all words and their neighbors
-    wordList.append(beginWord)
+    word_list.append(begin_word)
     word_neighbors = dict()
-    for index, word, in enumerate(wordList):
+    for index, word, in enumerate(word_list):
         neighbors = list()
         # check the differences in spelling between words
-        for other_index, other_word in enumerate(wordList):
+        for other_index, other_word in enumerate(word_list):
             diff = set(word) - set(other_word)  # letters in word, not in other
             if len(diff) == 1:
                 neighbors.append(other_word)
         # add pair to dict
         word_neighbors[word] = neighbors
     # use BFS to get from beginWord to the end
-    queue = [beginWord]
+    queue = [begin_word]
     # visited = set()
     # store each word, with path taken from beginWord to reach it
     word_path = {
-        beginWord: [beginWord]
+        begin_word: [begin_word]
     }
     while len(queue) > 0:
         current_word = queue.pop()
 
         # found the end
-        if current_word == endWord:
+        if current_word == end_word:
             break
         
         # enqueue the neighbors
@@ -196,4 +196,4 @@ def wordLadderLength(beginWord, endWord, wordList):
                 word_path[neighbor] = next_path
                 queue.append(neighbor)
     # return the length
-    return len(word_path[endWord])
+    return len(word_path[end_word])
